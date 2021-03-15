@@ -2,6 +2,18 @@
  * JavaScript Shopping Cart
  */
 
+//  You will create a shopping cart today for a florist that sells a variety of flowers.
+
+// Additionally to the standard features(add to cart, change quantity, remove from cart and showing total sum), you should implement the following:
+
+// 1) showing the amount of items in the cart
+
+// 2) giving and displaying a discount if the amount is over a certain amount (e.g. 10% on EUR 100,- purchase)
+
+// 3) checking the stock price(e.g. if the user wants to purchase 5 roses and there are only 4 in stock, there should be a message saying only 4 are still in stock)
+
+
+
 function documentReady() {
     let insertBtns = document.getElementsByClassName('product-button');
     for (let i = 0; i < insertBtns.length; i++) {
@@ -81,21 +93,34 @@ function rowCreate(title, price, picSrc) {
 }
 
 function updateTotal() {
-    let cart = document.getElementById("cart-items");
+    // let cart = document.getElementById("cart-items");
     let cartRows = cart.getElementsByClassName("cart-row");
     let total = 0; // it will be calculated from zero each time it is updated
+    let totalQuantity = 0;
     for (let i = 0; i < cartRows.length; i++) {
         let cartRow = cartRows[i];
         let price = parseFloat(cartRow.getElementsByClassName("cart-price")[0].innerText.replace("€", ""));//we need the first one
         let qtt = Number(cartRow.getElementsByClassName("cart-quantity")[0].innerText);
+        totalQuantity += qtt;
         console.log(price, qtt);
         total += (price * qtt);
         console.log(total);
     }
+    if (total >= 60){
+        let discount = (total*0.1);
+        total = total - discount; 
+        document.getElementById("target").innerHTML = `
+                    <strong class="cart-total-title" style="color:red;">Discount10%</strong>
+                    <span id="discount" class="cart-discount-total h4">${discount}€</span>
+                    `
+    }
     total = total.toFixed(2);//toFixed() will help rounding the number to 2 decimals
+    let totalQuant = document.getElementById("quantity").querySelector("#quantity-span");
     let totalElement = document.getElementById("total").querySelector('#price');
     // console.log(total);
     totalElement.innerHTML = "€" + total;
+    totalQuant.innerHTML = totalQuantity + " stk";
+    
 }
 
 function plusQtt(e) {
