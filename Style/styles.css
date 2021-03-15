@@ -19,6 +19,13 @@ body {
     color: #94C5CC;
 }
 
+
+/* .product-stock {
+    display: none;
+} */
+
+
+
 .product-image {
    
     object-fit: cover;

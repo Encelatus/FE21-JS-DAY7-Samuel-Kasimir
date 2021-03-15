@@ -11,7 +11,19 @@
 // 2) giving and displaying a discount if the amount is over a certain amount (e.g. 10% on EUR 100,- purchase)
 
 // 3) checking the stock price(e.g. if the user wants to purchase 5 roses and there are only 4 in stock, there should be a message saying only 4 are still in stock)
+// Step one: create a stock for ONE item and give it random amount.
+// Step two: compare stock and user quantity with if() and show message with stock.
+// Step three: if it works, copy the code for other items.
 
+function addStock () {
+    itemsStock = document.getElementsByClassName('product-stock');
+    for ( let i = 0; i < itemsStock.length; i++) {
+        let itemStock = itemsStock[i];
+        itemStock = Math.floor(Math.random()*21);
+        document.getElementsByClassName('product-stock')[i].innerHTML = itemStock;
+    }
+}
+addStock ();
 
 
 function documentReady() {
@@ -59,6 +71,18 @@ function rowCreate(title, price, picSrc) {
     let cartItems = document.getElementById('cart-items');
     let cartItemsNames = cartItems.getElementsByClassName('cart-item-title');
     let cartItemQtt = cartItems.getElementsByClassName('cart-quantity');
+
+    // console.log(CartItemQtt);
+    // let itemStock = document.getElementsByClassName('product-stock');
+    // // for (let i = 0; i < itemStock.length; i++) {
+    // //     let qtt = Number(cartItemQtt[i].innerHTML);
+    // //     let qttStock = Number(itemStock[i].innerHTML);
+    // //         console.log(qttStock);
+    // //         if (qtt > qttStock) {   
+    // //             alert("ALERT");
+    // //         }
+    // //     }
+
     for (let i = 0; i < cartItemsNames.length; i++) {
         if (cartItemsNames[i].innerText == title) {
             alert("This item already exists in your cart");
@@ -67,7 +91,6 @@ function rowCreate(title, price, picSrc) {
             console.log(qtt);
             updateTotal();
             return;//it will stop our script
-
         }
 
     }
@@ -79,7 +102,7 @@ function rowCreate(title, price, picSrc) {
         </div>
         
         <span class="cart-price col-3 h4 my-3">€ ${price}</span>
-       
+
         <div class="cart-qtty-action col-3 d-flex">            
             <i class="minus fa fa-minus-circle my-auto" ></i>            
             <div class="cart-quantity p-4 h4">1</div>            
@@ -96,6 +119,7 @@ function updateTotal() {
     // let cart = document.getElementById("cart-items");
     let cartRows = cart.getElementsByClassName("cart-row");
     let total = 0; // it will be calculated from zero each time it is updated
+    let discount = 0;
     let totalQuantity = 0;
     for (let i = 0; i < cartRows.length; i++) {
         let cartRow = cartRows[i];
@@ -106,12 +130,19 @@ function updateTotal() {
         total += (price * qtt);
         console.log(total);
     }
+
     if (total >= 60){
-        let discount = (total*0.1);
+        discount = (total*0.1);
+        discount = discount.toFixed(2);
         total = total - discount; 
-        document.getElementById("target").innerHTML = `
+        document.getElementById("targetD").innerHTML = `
                     <strong class="cart-total-title" style="color:red;">Discount10%</strong>
                     <span id="discount" class="cart-discount-total h4">${discount}€</span>
+                    `
+    } else {
+        document.getElementById("targetD").innerHTML = `
+                    <strong class="cart-total-title" style="color:red; display:none"></strong>
+                    <span id="discount" class="cart-discount-total h4 display:none"></span>
                     `
     }
     total = total.toFixed(2);//toFixed() will help rounding the number to 2 decimals
@@ -119,8 +150,7 @@ function updateTotal() {
     let totalElement = document.getElementById("total").querySelector('#price');
     // console.log(total);
     totalElement.innerHTML = "€" + total;
-    totalQuant.innerHTML = totalQuantity + " stk";
-    
+    totalQuant.innerHTML = totalQuantity + " stk"; 
 }
 
 function plusQtt(e) {
