@@ -61,17 +61,17 @@ function addItem(e) {
     let title = item.querySelector('.product-title').innerText;
     let price = item.querySelector('.product-price').innerText.replace("€", "");
     let picSrc = item.querySelector('.product-image').src;
+    let stockSrc = item.querySelector('.product-stock').innerText;
     // console.log(title, price, picSrc);
-    rowCreate(title, price, picSrc);
+    rowCreate(title, price, picSrc, stockSrc);
     updateTotal();
 
 }
 
-function rowCreate(title, price, picSrc) {
+function rowCreate(title, price, picSrc, stockSrc) {
     let cartItems = document.getElementById('cart-items');
     let cartItemsNames = cartItems.getElementsByClassName('cart-item-title');
     let cartItemQtt = cartItems.getElementsByClassName('cart-quantity');
-
     // console.log(CartItemQtt);
     // let itemStock = document.getElementsByClassName('product-stock');
     // // for (let i = 0; i < itemStock.length; i++) {
@@ -105,7 +105,10 @@ function rowCreate(title, price, picSrc) {
 
         <div class="cart-qtty-action col-3 d-flex">            
             <i class="minus fa fa-minus-circle my-auto" ></i>            
-            <div class="cart-quantity p-4 h4">1</div>            
+            <div class="cart-quantity p-4 h4">1</div>
+
+            <div class="cart-stock" style="display:none;"> ${stockSrc}</div>
+
             <i class="plus fa fa-plus-circle my-auto"></i>         
             <button class="del btn btn-danger rounded-circle  my-auto ms-3 fw-bold" type="button"> X </button>            
         </div>
@@ -125,12 +128,23 @@ function updateTotal() {
         let cartRow = cartRows[i];
         let price = parseFloat(cartRow.getElementsByClassName("cart-price")[0].innerText.replace("€", ""));//we need the first one
         let qtt = Number(cartRow.getElementsByClassName("cart-quantity")[0].innerText);
+        let qttStock = Number(document.getElementsByClassName('cart-stock')[0].innerText);
+        console.log(qttStock);
         totalQuantity += qtt;
         console.log(price, qtt);
         total += (price * qtt);
         console.log(total);
     }
-
+    // // for (let i = 0; i < cartRows.length; i++) {
+    // //     let cartRow = cartRows[i];
+    // //     let qtt = Number(cartRow.getElementsByClassName("cart-quantity")[0].innerText);
+    // //     let qttStock = Number(cartRow.getElementsByClassName('cart-stock')[0].innerText);
+    // //     if (qtt > qttStock ) {
+    // //         alert(`Ther is only ${qttStock} left`);
+    // //     } else {
+    // //         console.log(qttStock);
+    // //     }
+    // }
     if (total >= 60){
         discount = (total*0.1);
         discount = discount.toFixed(2);
